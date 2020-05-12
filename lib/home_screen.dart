@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: GreenhousesColors.green,
         selectedLabelStyle: TextStyle(fontSize: 12, fontFamily: 'Graphik', fontWeight: FontWeight.w600, color: GreenhousesColors.green),
         unselectedItemColor: GreenhousesColors.gray,
-        unselectedLabelStyle: TextStyle(fontSize: 12, fontFamily: 'Graphik', fontWeight: FontWeight.w400, color: GreenhousesColors.gray),
+        unselectedLabelStyle: TextStyle(fontSize: 12, fontFamily: 'Graphik', fontWeight: FontWeight.w400, color: GreenhousesColors.grayText),
         backgroundColor: Colors.white,
         onTap: (index) {
           setState(() {
