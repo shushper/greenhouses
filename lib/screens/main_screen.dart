@@ -6,7 +6,7 @@ import 'package:greenhouses/models/greenhouse.dart';
 class MainScreen extends StatelessWidget {
   final greenhouses = <Greenhouse>[
     Greenhouse(
-        image: 'assets/images/greenhouse_thumb_1.jpg',
+        image: 'assets/images/greenhouse_thumb_1.jpeg',
         lightningToggled: true,
         temperatureToggled: true,
         wateringToggled: false,
@@ -16,7 +16,7 @@ class MainScreen extends StatelessWidget {
         watering: null,
         ventilation: null),
     Greenhouse(
-        image: 'assets/images/greenhouse_thumb_1.jpg',
+        image: 'assets/images/greenhouse_thumb_2.jpeg',
         lightningToggled: true,
         temperatureToggled: true,
         wateringToggled: false,
@@ -193,7 +193,6 @@ class GreenhouseItem extends StatelessWidget {
                       child: Image.asset(
                         greenhouse.image,
                         fit: BoxFit.cover,
-                        alignment: Alignment.topCenter,
                       ),
                     ),
                     Positioned(
