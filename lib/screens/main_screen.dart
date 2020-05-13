@@ -32,18 +32,14 @@ class MainScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: ListView.builder(
-          itemCount: 5,
+          itemCount: 4,
           itemBuilder: (context, index) {
             if (index == 0) {
               return WeatherSection();
-            }
-            if (index == 1) {
-              return ParametersSection();
-            }
-            if (index == 2) {
+            } else if (index == 1) {
               return GreenhouseTitle();
             } else {
-              final i = index - 2;
+              final i = index - 1;
               return GreenhouseItem(i, greenhouses[i - 1]);
             }
           },
@@ -54,58 +50,12 @@ class MainScreen extends StatelessWidget {
 }
 
 class WeatherSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Image.asset(
-            'assets/images/cloudy.png',
-            height: 46.0,
-          ),
-          SizedBox(
-            width: 16.0,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'March 16, Mon',
-                style: TextStyle(
-                  fontFamily: 'Graphik',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  color: GreenhousesColors.blackText,
-                ),
-              ),
-              SizedBox(
-                height: 4.0,
-              ),
-              Text(
-                'Cloudy',
-                style: TextStyle(
-                  fontFamily: 'Graphik',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                  color: GreenhousesColors.blackMediumText,
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
 
-class ParametersSection extends StatelessWidget {
   static const _kTitleStyle = TextStyle(
       fontWeight: FontWeight.w500,
       color: GreenhousesColors.blackMediumText,
       fontSize: 18);
+
   static const _kValueStyle = TextStyle(
       fontWeight: FontWeight.w400,
       color: GreenhousesColors.grayText,
@@ -113,37 +63,86 @@ class ParametersSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text('54%', style: _kTitleStyle, textAlign: TextAlign.center),
-              SizedBox(height: 8),
-              Text('Humidity',
-                  style: _kValueStyle, textAlign: TextAlign.center),
+              Image.asset(
+                'assets/images/cloudy.png',
+                height: 46.0,
+              ),
+              SizedBox(
+                width: 16.0,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'March 16, Mon',
+                    style: TextStyle(
+                      fontFamily: 'Graphik',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: GreenhousesColors.blackText,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  Text(
+                    'Cloudy',
+                    style: TextStyle(
+                      fontFamily: 'Graphik',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      color: GreenhousesColors.blackMediumText,
+                    ),
+                  )
+                ],
+              )
             ],
           ),
-          Column(
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('11°C', style: _kTitleStyle, textAlign: TextAlign.center),
-              SizedBox(height: 8),
-              Text('Temperature',
-                  style: _kValueStyle, textAlign: TextAlign.center),
+              Column(
+                children: <Widget>[
+                  Text('54%', style: _kTitleStyle, textAlign: TextAlign.center),
+                  SizedBox(height: 8),
+                  Text('Humidity',
+                      style: _kValueStyle, textAlign: TextAlign.center),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                      '11°C', style: _kTitleStyle, textAlign: TextAlign.center),
+                  SizedBox(height: 8),
+                  Text('Temperature',
+                      style: _kValueStyle, textAlign: TextAlign.center),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Text('0,5 cm', style: _kTitleStyle,
+                      textAlign: TextAlign.center),
+                  SizedBox(height: 8),
+                  Text('Precipitation',
+                      style: _kValueStyle, textAlign: TextAlign.center),
+                ],
+              )
             ],
           ),
-          Column(
-            children: <Widget>[
-              Text('0,5 cm', style: _kTitleStyle, textAlign: TextAlign.center),
-              SizedBox(height: 8),
-              Text('Precipitation',
-                  style: _kValueStyle, textAlign: TextAlign.center),
-            ],
-          )
-        ],
-      ),
+        ),
+      ]
+      ,
     );
   }
 }
