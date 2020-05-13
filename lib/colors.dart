@@ -6,5 +6,6 @@ class GreenhousesColors {
   static const Color blackText = Color(0xFF26262C);
   static const Color grayText = Color(0xFFB4B8B6);
   static const Color blackMediumText = Color(0xFF000000);
+  static const Color border = Color(0xFFE4E9E3);
 
 }

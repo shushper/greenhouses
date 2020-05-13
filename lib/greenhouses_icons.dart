@@ -24,4 +24,8 @@ class GreenhousesIcons {
   static const IconData home_tab = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData assistant_tab = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData profile_tab = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData lightning = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData temperature = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData watering = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData ventilation = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
