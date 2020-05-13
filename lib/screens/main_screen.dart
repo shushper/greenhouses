@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:greenhouses/Greenhouse.dart';
-import 'package:greenhouses/colors.dart';
-import 'package:greenhouses/greenhouses_icons.dart';
+import 'package:greenhouses/design/colors.dart';
+import 'package:greenhouses/design/icons.dart';
+import 'package:greenhouses/models/greenhouse.dart';
 
 class MainScreen extends StatelessWidget {
   final greenhouses = <Greenhouse>[

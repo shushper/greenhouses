@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:greenhouses/colors.dart';
-import 'package:greenhouses/greenhouses_icons.dart';
-import 'package:greenhouses/main_screen.dart';
+import 'package:greenhouses/design/colors.dart';
+import 'package:greenhouses/design/icons.dart';
+import 'package:greenhouses/screens/main_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

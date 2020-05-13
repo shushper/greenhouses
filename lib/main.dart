@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:greenhouses/colors.dart';
-import 'package:greenhouses/home_screen.dart';
+import 'package:greenhouses/design/colors.dart';
+import 'package:greenhouses/screens/home_screen.dart';
 
 void main() {
   runApp(MyApp());
