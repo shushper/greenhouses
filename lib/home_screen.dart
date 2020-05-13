@@ -22,11 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
             offstage: currentPage != 0,
           ),
           Offstage(
-            child: Container(color: Colors.lightGreen),
+            child: Container(color: Colors.white),
             offstage: currentPage != 1,
           ),
           Offstage(
-            child: Container(color: Colors.blueGrey),
+            child: Container(color: Colors.white),
             offstage: currentPage != 2,
           )
         ],

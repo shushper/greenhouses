@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:greenhouses/colors.dart';
 import 'package:greenhouses/home_screen.dart';
 
 void main() {
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Graphik',
         scaffoldBackgroundColor: Colors.white,
+        accentColor: GreenhousesColors.green,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

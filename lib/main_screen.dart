@@ -73,7 +73,7 @@ class WeatherSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                '16 марта, пн',
+                'March 16, Mon',
                 style: TextStyle(
                   fontFamily: 'Graphik',
                   fontWeight: FontWeight.w400,
@@ -114,35 +114,37 @@ class ParametersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-        child: Table(
-          children: <TableRow>[
-            TableRow(children: [
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            children: <Widget>[
               Text('54%', style: _kTitleStyle, textAlign: TextAlign.center),
-              Text('11°C', style: _kTitleStyle, textAlign: TextAlign.center),
-              Text('0,5 cm', style: _kTitleStyle, textAlign: TextAlign.center)
-            ]),
-            TableRow(children: [
-              SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                height: 8,
-              ),
-            ]),
-            TableRow(children: [
+              SizedBox(height: 8),
               Text('Humidity',
                   style: _kValueStyle, textAlign: TextAlign.center),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Text('11°C', style: _kTitleStyle, textAlign: TextAlign.center),
+              SizedBox(height: 8),
               Text('Temperature',
                   style: _kValueStyle, textAlign: TextAlign.center),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Text('0,5 cm', style: _kTitleStyle, textAlign: TextAlign.center),
+              SizedBox(height: 8),
               Text('Precipitation',
-                  style: _kValueStyle, textAlign: TextAlign.center)
-            ])
-          ],
-        ));
+                  style: _kValueStyle, textAlign: TextAlign.center),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
 
