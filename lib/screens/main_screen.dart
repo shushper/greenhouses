@@ -4,6 +4,9 @@ import 'package:greenhouses/design/icons.dart';
 import 'package:greenhouses/models/greenhouse.dart';
 
 class MainScreen extends StatelessWidget {
+
+  static final route = 'main_screen';
+
   final greenhouses = <Greenhouse>[
     Greenhouse(
         image: 'assets/images/greenhouse_thumb_1.jpeg',
