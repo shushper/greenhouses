@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/design/icons.dart';
 import 'package:greenhouses/models/greenhouse.dart';
+import 'package:greenhouses/screens/lightning_screen.dart';
 
 class GreenhouseScreen extends StatelessWidget {
   static final route = 'greenhouse_screen';
@@ -69,26 +70,32 @@ class ControlsSection extends StatelessWidget {
           children: <TableRow>[
             TableRow(children: [
               GreenhouseToggle(
-                GreenhousesIcons.lightning,
-                'Lightning',
-                greenhouse.lightningToggled,
+                iconData: GreenhousesIcons.lightning,
+                title: 'Lightning',
+                toggled: greenhouse.lightningToggled,
+                onTap: () {
+                  Navigator.pushNamed(context, LightningScreen.route, arguments: greenhouse);
+                },
               ),
               GreenhouseToggle(
-                GreenhousesIcons.temperature,
-                'Temperature',
-                greenhouse.temperatureToggled,
+                iconData: GreenhousesIcons.temperature,
+                title: 'Temperature',
+                toggled: greenhouse.temperatureToggled,
+                onTap: () {},
               )
             ]),
             TableRow(children: [
               GreenhouseToggle(
-                GreenhousesIcons.watering,
-                'Watering',
-                greenhouse.wateringToggled,
+                iconData: GreenhousesIcons.watering,
+                title: 'Watering',
+                toggled: greenhouse.wateringToggled,
+                onTap: () {},
               ),
               GreenhouseToggle(
-                GreenhousesIcons.ventilation,
-                'Ventilation',
-                greenhouse.ventilationToggled,
+                iconData: GreenhousesIcons.ventilation,
+                title: 'Ventilation',
+                toggled: greenhouse.ventilationToggled,
+                onTap: () {},
               )
             ])
           ],
@@ -98,21 +105,13 @@ class ControlsSection extends StatelessWidget {
   }
 }
 
-class GreenhouseToggle extends StatefulWidget {
+class GreenhouseToggle extends StatelessWidget {
   final IconData iconData;
   final String title;
   final bool toggled;
+  final Function onTap;
 
-  GreenhouseToggle(this.iconData, this.title, this.toggled);
-
-  @override
-  _GreenhouseToggleState createState() => _GreenhouseToggleState(toggled);
-}
-
-class _GreenhouseToggleState extends State<GreenhouseToggle> {
-  var toggled = false;
-
-  _GreenhouseToggleState(this.toggled);
+  GreenhouseToggle({this.iconData, this.title, this.toggled, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -123,56 +122,82 @@ class _GreenhouseToggleState extends State<GreenhouseToggle> {
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Container(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(24.0),
-            border: Border.all(
-              color: borderColor,
-              width: toggled ? 0 : 1,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(24.0),
+              border: Border.all(
+                color: borderColor,
+                width: toggled ? 0 : 1,
+              ),
             ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      widget.iconData,
-                      size: 24,
-                      color: controlsColor,
-                    ),
-                    Spacer(),
-                    CupertinoSwitch(
-                      activeColor: Color(0xFF006729),
-                      value: toggled,
-                      onChanged: (checked) {
-                        setState(() {
-                          toggled = checked;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                      color: controlsColor),
-                )
-              ],
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        iconData,
+                        size: 24,
+                        color: controlsColor,
+                      ),
+                      Spacer(),
+                      Indicator(toggled)
+                    ],
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  Text(
+                    title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                        color: controlsColor),
+                  )
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class Indicator extends StatelessWidget {
+  final toggled;
+
+  const Indicator(this.toggled);
+
+  @override
+  Widget build(BuildContext context) {
+    if (toggled) {
+      return Container(
+        width: 16.0,
+        height: 16.0,
+        decoration: ShapeDecoration(shadows: [
+          BoxShadow(
+              color: Color(0x26000000), offset: Offset(0, 3), blurRadius: 8),
+          BoxShadow(
+              color: Color(0x29000000), offset: Offset(0, 1), blurRadius: 1),
+          BoxShadow(
+              color: Color(0x1A000000), offset: Offset(0, 3), blurRadius: 1)
+        ], color: Colors.white, shape: CircleBorder()),
+      );
+    } else {
+      return Container(
+        width: 16.0,
+        height: 16.0,
+        decoration: ShapeDecoration(
+            color: GreenhousesColors.lightGreen, shape: CircleBorder()),
+      );
+    }
   }
 }
