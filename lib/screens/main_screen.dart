@@ -2,32 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/design/icons.dart';
 import 'package:greenhouses/models/greenhouse.dart';
+import 'package:greenhouses/screens/greenhouse_screen.dart';
 
 class MainScreen extends StatelessWidget {
-
   static final route = 'main_screen';
 
   final greenhouses = <Greenhouse>[
     Greenhouse(
-        image: 'assets/images/greenhouse_thumb_1.jpeg',
-        lightningToggled: true,
-        temperatureToggled: true,
-        wateringToggled: false,
-        ventilationToggled: false,
-        lightning: '59%',
-        temperature: '30°C',
-        watering: null,
-        ventilation: null),
+      name: 'Greenhouse 1',
+      image: 'assets/images/greenhouse_1.jpeg',
+      thumb: 'assets/images/greenhouse_thumb_1.jpeg',
+      lightningToggled: true,
+      temperatureToggled: true,
+      wateringToggled: false,
+      ventilationToggled: false,
+      lightning: '59%',
+      temperature: '30°C',
+      watering: null,
+      ventilation: null,
+    ),
     Greenhouse(
-        image: 'assets/images/greenhouse_thumb_2.jpeg',
-        lightningToggled: true,
-        temperatureToggled: true,
-        wateringToggled: false,
-        ventilationToggled: true,
-        lightning: '23%',
-        temperature: '42°C',
-        watering: null,
-        ventilation: '20 m³/h')
+      name: 'Greenhouse 2',
+      image: 'assets/images/greenhouse_2.jpeg',
+      thumb: 'assets/images/greenhouse_thumb_2.jpeg',
+      lightningToggled: true,
+      temperatureToggled: true,
+      wateringToggled: false,
+      ventilationToggled: true,
+      lightning: '23%',
+      temperature: '42°C',
+      watering: null,
+      ventilation: '20 m³/h',
+    )
   ];
 
   @override
@@ -43,7 +49,7 @@ class MainScreen extends StatelessWidget {
               return GreenhouseTitle();
             } else {
               final i = index - 1;
-              return GreenhouseItem(i, greenhouses[i - 1]);
+              return GreenhouseItem(greenhouses[i - 1]);
             }
           },
         ),
@@ -53,7 +59,6 @@ class MainScreen extends StatelessWidget {
 }
 
 class WeatherSection extends StatelessWidget {
-
   static const _kTitleStyle = TextStyle(
       fontWeight: FontWeight.w500,
       color: GreenhousesColors.blackMediumText,
@@ -125,8 +130,8 @@ class WeatherSection extends StatelessWidget {
               ),
               Column(
                 children: <Widget>[
-                  Text(
-                      '11°C', style: _kTitleStyle, textAlign: TextAlign.center),
+                  Text('11°C',
+                      style: _kTitleStyle, textAlign: TextAlign.center),
                   SizedBox(height: 8),
                   Text('Temperature',
                       style: _kValueStyle, textAlign: TextAlign.center),
@@ -134,8 +139,8 @@ class WeatherSection extends StatelessWidget {
               ),
               Column(
                 children: <Widget>[
-                  Text('0,5 cm', style: _kTitleStyle,
-                      textAlign: TextAlign.center),
+                  Text('0,5 cm',
+                      style: _kTitleStyle, textAlign: TextAlign.center),
                   SizedBox(height: 8),
                   Text('Precipitation',
                       style: _kValueStyle, textAlign: TextAlign.center),
@@ -144,8 +149,7 @@ class WeatherSection extends StatelessWidget {
             ],
           ),
         ),
-      ]
-      ,
+      ],
     );
   }
 }
@@ -169,10 +173,10 @@ class GreenhouseTitle extends StatelessWidget {
 }
 
 class GreenhouseItem extends StatelessWidget {
-  final int index;
+
   final Greenhouse greenhouse;
 
-  GreenhouseItem(this.index, this.greenhouse);
+  GreenhouseItem(this.greenhouse);
 
   @override
   Widget build(BuildContext context) {
@@ -180,89 +184,94 @@ class GreenhouseItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
-        child: Container(
-          height: 240,
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 138,
-                child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: Image.asset(
-                        greenhouse.image,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      top: 24,
-                      left: 16,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: GreenhousesColors.green,
-                            borderRadius: BorderRadius.circular(16)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 7, horizontal: 14),
-                          child: Text(
-                            'Greenhouse $index',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
-                          ),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(GreenhouseScreen.route, arguments: greenhouse);
+          },
+          child: Container(
+            height: 240,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 138,
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Image.asset(
+                          greenhouse.thumb,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                height: 102,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: GreenhousesColors.border,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      GreenhouseToggleCompact(
-                        GreenhousesIcons.lightning,
-                        greenhouse.lightning,
-                        greenhouse.lightningToggled,
-                      ),
-                      GreenhouseToggleCompact(
-                        GreenhousesIcons.temperature,
-                        greenhouse.temperature,
-                        greenhouse.temperatureToggled,
-                      ),
-                      GreenhouseToggleCompact(
-                        GreenhousesIcons.watering,
-                        greenhouse.watering,
-                        greenhouse.wateringToggled,
-                      ),
-                      GreenhouseToggleCompact(
-                        GreenhousesIcons.ventilation,
-                        greenhouse.ventilation,
-                        greenhouse.ventilationToggled,
+                      Positioned(
+                        top: 24,
+                        left: 16,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: GreenhousesColors.green,
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 7, horizontal: 14),
+                            child: Text(
+                              greenhouse.name,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
                       )
                     ],
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  height: 102,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: GreenhousesColors.border,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        GreenhouseToggleCompact(
+                          GreenhousesIcons.lightning,
+                          greenhouse.lightning,
+                          greenhouse.lightningToggled,
+                        ),
+                        GreenhouseToggleCompact(
+                          GreenhousesIcons.temperature,
+                          greenhouse.temperature,
+                          greenhouse.temperatureToggled,
+                        ),
+                        GreenhouseToggleCompact(
+                          GreenhousesIcons.watering,
+                          greenhouse.watering,
+                          greenhouse.wateringToggled,
+                        ),
+                        GreenhouseToggleCompact(
+                          GreenhousesIcons.ventilation,
+                          greenhouse.ventilation,
+                          greenhouse.ventilationToggled,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

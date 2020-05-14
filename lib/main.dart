@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Graphik',
         scaffoldBackgroundColor: Colors.white,
         accentColor: GreenhousesColors.green,
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeScreen()

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:greenhouses/screens/greenhouse_screen.dart';
 import 'package:greenhouses/screens/main_screen.dart';
 
 class MainNavigator extends StatelessWidget {
@@ -15,6 +16,8 @@ class MainNavigator extends StatelessWidget {
         return PageRouteBuilder(pageBuilder: (context, animation1, animation2) {
           if (routeSettings.name == MainScreen.route) {
             return MainScreen();
+          } else if (routeSettings.name == GreenhouseScreen.route) {
+            return GreenhouseScreen(routeSettings.arguments);
           } else {
             throw Exception('Uknown rout ${routeSettings.name}');
           }

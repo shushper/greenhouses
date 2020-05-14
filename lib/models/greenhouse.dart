@@ -1,5 +1,7 @@
 class Greenhouse {
+  final String name;
   final String image;
+  final String thumb;
 
   final bool lightningToggled;
   final bool temperatureToggled;
@@ -12,7 +14,9 @@ class Greenhouse {
   final String ventilation;
 
   Greenhouse({
+    this.name,
     this.image,
+    this.thumb,
     this.lightningToggled,
     this.temperatureToggled,
     this.wateringToggled,
