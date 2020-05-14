@@ -28,4 +28,6 @@ class GreenhousesIcons {
   static const IconData temperature = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData watering = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData ventilation = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData timer = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData date = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

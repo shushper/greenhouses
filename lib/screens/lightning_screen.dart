@@ -40,7 +40,8 @@ class _LightningScreenState extends State<LightningScreen> {
               });
             },
           ),
-          LightningControl()
+          LightningControl(),
+          SettingsSection()
         ],
       ),
     );
@@ -161,10 +162,9 @@ class LightningInnerWidget extends StatelessWidget {
                 Text(
                   'Yellow light',
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: GreenhousesColors.grayText
-                  ),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: GreenhousesColors.grayText),
                 )
               ],
             ),
@@ -176,7 +176,6 @@ class LightningInnerWidget extends StatelessWidget {
 }
 
 class CrossLinesPainter extends CustomPainter {
-
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -197,7 +196,105 @@ class CrossLinesPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
   }
-
 }
 
+class SettingsSection extends StatelessWidget {
+  static const _kTitleStyle = TextStyle(
+      fontWeight: FontWeight.w500,
+      color: GreenhousesColors.blackMediumText,
+      fontSize: 16);
 
+  static const _kValueStyle = TextStyle(
+      fontWeight: FontWeight.w400,
+      color: GreenhousesColors.grayText,
+      fontSize: 14);
+
+  @override
+  Widget build(BuildContext context) {
+    return Table(
+      children: [
+        TableRow(children: [
+          CircleColor(Color(0xFFFFD233)),
+          CircleIcon(GreenhousesIcons.timer),
+          CircleIcon(GreenhousesIcons.date),
+        ]),
+        TableRow(children: [
+          SizedBox(height: 12),
+          SizedBox(height: 12),
+          SizedBox(height: 12)
+        ]),
+        TableRow(children: [
+          Text('Color', style: _kTitleStyle, textAlign: TextAlign.center),
+          Text('Timer', style: _kTitleStyle, textAlign: TextAlign.center),
+          Text('Date', style: _kTitleStyle, textAlign: TextAlign.center),
+        ]),
+        TableRow(children: [
+          SizedBox(height: 12),
+          SizedBox(height: 12),
+          SizedBox(height: 12)
+        ]),
+        TableRow(children: [
+          Text('Yellow', style: _kValueStyle, textAlign: TextAlign.center),
+          Text('17:00-22:00', style: _kValueStyle, textAlign: TextAlign.center),
+          Text('Everyday', style: _kValueStyle, textAlign: TextAlign.center),
+        ]),
+      ],
+    );
+  }
+}
+
+class CircleColor extends StatelessWidget {
+  final Color color;
+
+  CircleColor(this.color);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 48,
+      height: 48,
+      decoration: ShapeDecoration(
+        shape: CircleBorder(
+          side: BorderSide(color: GreenhousesColors.border),
+        ),
+      ),
+      child: Center(
+        child: Container(
+          width: 22,
+          height: 22,
+          decoration: ShapeDecoration(
+            color: color,
+            shadows: [
+              BoxShadow(
+                color: color.withAlpha(40),
+                offset: Offset(0, 4),
+                blurRadius: 10
+              )
+            ],
+            shape: CircleBorder(
+              side: BorderSide(color: Colors.white, width: 2),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CircleIcon extends StatelessWidget {
+  final IconData iconData;
+
+  CircleIcon(this.iconData);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 48,
+      height: 48,
+      decoration: ShapeDecoration(
+          shape:
+              CircleBorder(side: BorderSide(color: GreenhousesColors.border))),
+      child: Icon(iconData),
+    );
+  }
+}
