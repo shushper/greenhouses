@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:greenhouses/blocs/greenhouse/greenhouse_bloc.dart';
-import 'package:greenhouses/blocs/greenhouse/greenhouse_event.dart';
 import 'package:greenhouses/data/greenhouse_repository.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/screens/home_screen.dart';
@@ -25,17 +23,7 @@ class Providers extends StatelessWidget {
           create: (context) => GreenhouseRepository(),
         )
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<GreenhouseBloc>(
-            create: (context) {
-              return GreenhouseBloc(context.repository<GreenhouseRepository>())
-                ..add(FetchGreenhouses());
-            },
-          )
-        ],
-        child: child,
-      ),
+      child: child,
     );
   }
 }

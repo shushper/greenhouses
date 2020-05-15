@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:greenhouses/screens/greenhouse_screen.dart';
-import 'package:greenhouses/screens/lightning_screen.dart';
-import 'package:greenhouses/screens/main_screen.dart';
+import 'package:greenhouses/screens/main/greenhouse/greenhouse_screen.dart';
+import 'package:greenhouses/screens/main/lightning/lightning_screen.dart';
+import 'package:greenhouses/screens/main/main/main_screen.dart';
 
 class MainNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState> _navigatorKey;

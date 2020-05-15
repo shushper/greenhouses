@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/design/icons.dart';
-import 'package:greenhouses/screens/main_navigator.dart';
+import 'package:greenhouses/screens/main/main_navigator.dart';
 
 enum HomeTab { main, assistant, profile }
 

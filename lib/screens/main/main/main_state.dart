@@ -2,14 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:greenhouses/models/greenhouse.dart';
 
-abstract class GreenhouseState extends Equatable {
+abstract class MainState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class GreenhousesLoading extends GreenhouseState {}
+class GreenhousesLoading extends MainState {}
 
-class GreenhousesLoaded extends GreenhouseState {
+class GreenhousesLoaded extends MainState {
   final List<Greenhouse> greenhouses;
 
   GreenhousesLoaded({@required this.greenhouses});

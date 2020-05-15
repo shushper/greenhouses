@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/design/icons.dart';
 import 'package:greenhouses/models/greenhouse.dart';
-import 'package:greenhouses/screens/lightning_screen.dart';
+import 'package:greenhouses/screens/main/lightning/lightning_screen.dart';
 
 class GreenhouseScreen extends StatelessWidget {
   static final route = 'greenhouse_screen';

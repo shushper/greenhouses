@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:greenhouses/blocs/greenhouse/greenhouse_bloc.dart';
-import 'package:greenhouses/blocs/greenhouse/greenhouse_state.dart';
+import 'package:greenhouses/data/greenhouse_repository.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/design/icons.dart';
 import 'package:greenhouses/models/greenhouse.dart';
-import 'package:greenhouses/screens/greenhouse_screen.dart';
+import 'package:greenhouses/screens/main/greenhouse/greenhouse_screen.dart';
+import 'package:greenhouses/screens/main/main/main_bloc.dart';
+import 'package:greenhouses/screens/main/main/main_event.dart';
+import 'package:greenhouses/screens/main/main/main_state.dart';
+
 
 class MainScreen extends StatelessWidget {
+
   static final route = 'main_screen';
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<MainBloc>(
+      create: (context) {
+        return MainBloc(context.repository<GreenhouseRepository>())..add(FetchGreenhouses());
+      },
+      child: MainScreenContent(),
+    );
+  }
+}
+
+
+class MainScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder<GreenhouseBloc, GreenhouseState>(
+        body: BlocBuilder<MainBloc, MainState>(
           builder: (context, state) {
 
             if (state is GreenhousesLoading) {
