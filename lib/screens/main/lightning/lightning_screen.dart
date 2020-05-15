@@ -2,47 +2,64 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/design/icons.dart';
-import 'package:greenhouses/models/greenhouse.dart';
+import 'package:greenhouses/models/lightning.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+
+
 
 class LightningScreen extends StatefulWidget {
   static final route = 'lightning_screen';
 
-  final Greenhouse greenhouse;
+  final Lightning lightning;
 
-  LightningScreen(this.greenhouse);
+  LightningScreen(this.lightning);
 
   @override
-  _LightningScreenState createState() =>
-      _LightningScreenState(greenhouse.lightningToggled);
+  _LightningScreenState createState() => _LightningScreenState(lightning);
 }
 
 class _LightningScreenState extends State<LightningScreen> {
-  var toggled = false;
 
-  _LightningScreenState(this.toggled);
+  var toggled;
+  var value;
+
+  _LightningScreenState(Lightning lightning) {
+    this.toggled = lightning.enabled;
+    this.value = lightning.value;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text('Lightning'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          SwitchSection(
-            toggled: toggled,
-            onToggled: (value) {
-              setState(() {
-                toggled = value;
-              });
-            },
-          ),
-          LightningControl(),
-          SettingsSection()
-        ],
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pop(context, Lightning());
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: Text('Lightning'),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SwitchSection(
+              toggled: toggled,
+              onToggled: (value) {
+                setState(() {
+                  toggled = value;
+                });
+              },
+            ),
+            LightningControl(
+              value: value,
+              onChanged: (value) {
+                this.value = value;
+              },
+            ),
+            SettingsSection()
+          ],
+        ),
       ),
     );
   }
@@ -86,6 +103,12 @@ class SwitchSection extends StatelessWidget {
 }
 
 class LightningControl extends StatelessWidget {
+
+  final int value;
+  final Function(int) onChanged;
+
+  LightningControl({this.value, this.onChanged});
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -110,10 +133,13 @@ class LightningControl extends StatelessWidget {
                     progressBarColor: GreenhousesColors.green)),
             min: 0,
             max: 100,
+            initialValue: value.toDouble(),
             innerWidget: (double value) {
               return LightningInnerWidget(value.toInt());
             },
-            onChange: (double value) {},
+            onChange: (double value) {
+              onChanged(value.toInt());
+            },
           ),
         ),
       ),

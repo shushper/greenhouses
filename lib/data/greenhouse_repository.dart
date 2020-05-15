@@ -1,40 +1,32 @@
-
 import 'package:greenhouses/models/greenhouse.dart';
+import 'package:greenhouses/models/lightning.dart';
+import 'package:greenhouses/models/temperature.dart';
+import 'package:greenhouses/models/ventilation.dart';
+import 'package:greenhouses/models/watering.dart';
 
 class GreenhouseRepository {
-
   final greenhouses = <Greenhouse>[
     Greenhouse(
       id: 1,
       name: 'Greenhouse 1',
       image: 'assets/images/greenhouse_1.jpeg',
       thumb: 'assets/images/greenhouse_thumb_1.jpeg',
-      lightningToggled: true,
-      temperatureToggled: true,
-      wateringToggled: false,
-      ventilationToggled: false,
-      lightning: '59%',
-      temperature: '30°C',
-      watering: null,
-      ventilation: null,
+      lightning: Lightning(enabled: true, value: 59),
+      temperature: Temperature(enabled: true, value: 30),
+      watering: Watering(enabled: false, value: 0),
+      ventilation: Ventilation(enabled: false, value: 0),
     ),
-
     Greenhouse(
       id: 2,
       name: 'Greenhouse 2',
       image: 'assets/images/greenhouse_2.jpeg',
       thumb: 'assets/images/greenhouse_thumb_2.jpeg',
-      lightningToggled: true,
-      temperatureToggled: true,
-      wateringToggled: false,
-      ventilationToggled: true,
-      lightning: '23%',
-      temperature: '42°C',
-      watering: null,
-      ventilation: '20 m³/h',
+      lightning: Lightning(enabled: true, value: 23),
+      temperature: Temperature(enabled: true, value: 42),
+      watering: Watering(enabled: false, value: 0),
+      ventilation: Ventilation(enabled: true, value: 20),
     )
   ];
-
 
   Future<List<Greenhouse>> getGreenhouses() async {
     return greenhouses;

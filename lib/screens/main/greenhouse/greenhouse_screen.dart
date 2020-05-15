@@ -106,16 +106,20 @@ class ControlsSection extends StatelessWidget {
               GreenhouseToggle(
                 iconData: GreenhousesIcons.lightning,
                 title: 'Lightning',
-                toggled: greenhouse.lightningToggled,
-                onTap: () {
-                  Navigator.pushNamed(context, LightningScreen.route,
-                      arguments: greenhouse);
+                toggled: greenhouse.lightning.enabled,
+                onTap: () async {
+                  final lightning = await Navigator.pushNamed(
+                    context,
+                    LightningScreen.route,
+                    arguments: greenhouse.lightning,
+                  );
+                  BlocProvider.of<GreenhouseBloc>(context).add(LightningWasChanged(lightning));
                 },
               ),
               GreenhouseToggle(
                 iconData: GreenhousesIcons.temperature,
                 title: 'Temperature',
-                toggled: greenhouse.temperatureToggled,
+                toggled: greenhouse.temperature.enabled,
                 onTap: () {},
               )
             ]),
@@ -123,13 +127,13 @@ class ControlsSection extends StatelessWidget {
               GreenhouseToggle(
                 iconData: GreenhousesIcons.watering,
                 title: 'Watering',
-                toggled: greenhouse.wateringToggled,
+                toggled: greenhouse.watering.enabled,
                 onTap: () {},
               ),
               GreenhouseToggle(
                 iconData: GreenhousesIcons.ventilation,
                 title: 'Ventilation',
-                toggled: greenhouse.ventilationToggled,
+                toggled: greenhouse.ventilation.enabled,
                 onTap: () {},
               )
             ])

@@ -297,23 +297,23 @@ class _GreenhouseItemState extends State<GreenhouseItem> with TickerProviderStat
                         children: <Widget>[
                           GreenhouseParamIndicator(
                             GreenhousesIcons.lightning,
-                            widget.greenhouse.lightning,
-                            widget.greenhouse.lightningToggled,
+                            widget.greenhouse.lightning.getReadableValue(),
+                            widget.greenhouse.lightning.enabled,
                           ),
                           GreenhouseParamIndicator(
                             GreenhousesIcons.temperature,
-                            widget.greenhouse.temperature,
-                            widget.greenhouse.temperatureToggled,
+                            widget.greenhouse.temperature.getReadableValue(),
+                            widget.greenhouse.temperature.enabled,
                           ),
                           GreenhouseParamIndicator(
                             GreenhousesIcons.watering,
-                            widget.greenhouse.watering,
-                            widget.greenhouse.wateringToggled,
+                            widget.greenhouse.watering.getReadableValue(),
+                            widget.greenhouse.watering.enabled,
                           ),
                           GreenhouseParamIndicator(
                             GreenhousesIcons.ventilation,
-                            widget.greenhouse.ventilation,
-                            widget.greenhouse.ventilationToggled,
+                            widget.greenhouse.ventilation.getReadableValue(),
+                            widget.greenhouse.ventilation.enabled,
                           )
                         ],
                       ),
