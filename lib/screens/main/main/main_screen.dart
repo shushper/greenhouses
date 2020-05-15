@@ -26,7 +26,6 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-
 class MainScreenContent extends StatelessWidget {
 
   @override
@@ -296,22 +295,22 @@ class _GreenhouseItemState extends State<GreenhouseItem> with TickerProviderStat
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          GreenhouseToggleCompact(
+                          GreenhouseParamIndicator(
                             GreenhousesIcons.lightning,
                             widget.greenhouse.lightning,
                             widget.greenhouse.lightningToggled,
                           ),
-                          GreenhouseToggleCompact(
+                          GreenhouseParamIndicator(
                             GreenhousesIcons.temperature,
                             widget.greenhouse.temperature,
                             widget.greenhouse.temperatureToggled,
                           ),
-                          GreenhouseToggleCompact(
+                          GreenhouseParamIndicator(
                             GreenhousesIcons.watering,
                             widget.greenhouse.watering,
                             widget.greenhouse.wateringToggled,
                           ),
-                          GreenhouseToggleCompact(
+                          GreenhouseParamIndicator(
                             GreenhousesIcons.ventilation,
                             widget.greenhouse.ventilation,
                             widget.greenhouse.ventilationToggled,
@@ -330,12 +329,12 @@ class _GreenhouseItemState extends State<GreenhouseItem> with TickerProviderStat
   }
 }
 
-class GreenhouseToggleCompact extends StatelessWidget {
+class GreenhouseParamIndicator extends StatelessWidget {
   final IconData iconData;
   final String title;
   final bool toggled;
 
-  GreenhouseToggleCompact(this.iconData, this.title, this.toggled);
+  GreenhouseParamIndicator(this.iconData, this.title, this.toggled);
 
   @override
   Widget build(BuildContext context) {
