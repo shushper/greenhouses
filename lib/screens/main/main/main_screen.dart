@@ -231,7 +231,7 @@ class _GreenhouseItemState extends State<GreenhouseItem> with TickerProviderStat
         },
         onTap: () {
           Navigator.of(context).pushNamed(GreenhouseScreen.route,
-              arguments: widget.greenhouse);
+              arguments: widget.greenhouse.id);
         },
         child: Transform.scale(
           scale: itemScale,

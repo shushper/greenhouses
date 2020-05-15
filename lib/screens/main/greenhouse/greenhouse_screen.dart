@@ -1,34 +1,68 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:greenhouses/data/greenhouse_repository.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/design/icons.dart';
 import 'package:greenhouses/models/greenhouse.dart';
+import 'package:greenhouses/screens/main/greenhouse/greenhouse_event.dart';
+import 'package:greenhouses/screens/main/greenhouse/greenhouse_state.dart';
 import 'package:greenhouses/screens/main/lightning/lightning_screen.dart';
+
+import 'greenhouse_bloc.dart';
 
 class GreenhouseScreen extends StatelessWidget {
   static final route = 'greenhouse_screen';
 
-  final Greenhouse greenhouse;
+  final int greenhouseId;
 
-  GreenhouseScreen(this.greenhouse);
+  GreenhouseScreen(this.greenhouseId);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: Text(greenhouse.name),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: ImagesSection(greenhouse),
+    return BlocProvider<GreenhouseBloc>(
+      create: (context) {
+        return GreenhouseBloc(
+          greenhouseId: greenhouseId,
+          repo: context.repository<GreenhouseRepository>(),
+        )..add(FetchGreenhouse());
+      },
+      child: GreenhouseScreenContent(),
+    );
+  }
+}
+
+class GreenhouseScreenContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GreenhouseBloc, GreenhouseState>(
+      builder: (context, state) {
+        if (state is GreenhouseLoading) {
+          return Container(color: Colors.white);
+        }
+
+        if (state is GreenhouseLoaded) {
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              title: Text(state.greenhouse.name),
             ),
-            ControlsSection(greenhouse),
-          ],
-        ));
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: ImagesSection(state.greenhouse),
+                ),
+                ControlsSection(state.greenhouse),
+              ],
+            ),
+          );
+        }
+
+        throw Exception('Unknown state $state');
+      },
+    );
   }
 }
 
@@ -74,7 +108,8 @@ class ControlsSection extends StatelessWidget {
                 title: 'Lightning',
                 toggled: greenhouse.lightningToggled,
                 onTap: () {
-                  Navigator.pushNamed(context, LightningScreen.route, arguments: greenhouse);
+                  Navigator.pushNamed(context, LightningScreen.route,
+                      arguments: greenhouse);
                 },
               ),
               GreenhouseToggle(

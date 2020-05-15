@@ -1,4 +1,5 @@
 class Greenhouse {
+  final int id;
   final String name;
   final String image;
   final String thumb;
@@ -14,6 +15,7 @@ class Greenhouse {
   final String ventilation;
 
   Greenhouse({
+    this.id,
     this.name,
     this.image,
     this.thumb,

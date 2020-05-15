@@ -22,7 +22,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     }
   }
 
-  Stream<MainState> _mapFetchGreenhousesToState(MainEvent event) async* {
+  Stream<MainState> _mapFetchGreenhousesToState(FetchGreenhouses event) async* {
     yield GreenhousesLoading();
     final greenhouses = await repo.getGreenhouses();
     yield GreenhousesLoaded(greenhouses: greenhouses);

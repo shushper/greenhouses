@@ -5,6 +5,7 @@ class GreenhouseRepository {
 
   final greenhouses = <Greenhouse>[
     Greenhouse(
+      id: 1,
       name: 'Greenhouse 1',
       image: 'assets/images/greenhouse_1.jpeg',
       thumb: 'assets/images/greenhouse_thumb_1.jpeg',
@@ -17,7 +18,9 @@ class GreenhouseRepository {
       watering: null,
       ventilation: null,
     ),
+
     Greenhouse(
+      id: 2,
       name: 'Greenhouse 2',
       image: 'assets/images/greenhouse_2.jpeg',
       thumb: 'assets/images/greenhouse_thumb_2.jpeg',
@@ -35,5 +38,9 @@ class GreenhouseRepository {
 
   Future<List<Greenhouse>> getGreenhouses() async {
     return greenhouses;
+  }
+
+  Future<Greenhouse> getGreenhouse(int id) async {
+    return greenhouses.firstWhere((element) => element.id == id);
   }
 }
