@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:greenhouses/design/colors.dart';
 import 'package:greenhouses/design/icons.dart';
 import 'package:greenhouses/models/lightning.dart';
+import 'package:greenhouses/screens/main/lightning/lightning_bloc.dart';
+import 'package:greenhouses/screens/main/lightning/lightning_event.dart';
+import 'package:greenhouses/screens/main/lightning/lightning_state.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
-
-
-class LightningScreen extends StatefulWidget {
+class LightningScreen extends StatelessWidget {
   static final route = 'lightning_screen';
 
   final Lightning lightning;
@@ -15,51 +17,76 @@ class LightningScreen extends StatefulWidget {
   LightningScreen(this.lightning);
 
   @override
-  _LightningScreenState createState() => _LightningScreenState(lightning);
+  Widget build(BuildContext context) {
+    return BlocProvider<LightningBloc>(
+      create: (context) {
+        return LightningBloc(lightning.value.toDouble(), lightning.enabled);
+      },
+      child: LightningScreenContent(),
+    );
+  }
 }
 
-class _LightningScreenState extends State<LightningScreen> {
-
-  var toggled;
-  var value;
-
-  _LightningScreenState(Lightning lightning) {
-    this.toggled = lightning.enabled;
-    this.value = lightning.value;
-  }
-
+class LightningScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // ignore: close_sinks
+    final LightningBloc lightningBloc = BlocProvider.of<LightningBloc>(context);
+
     return WillPopScope(
       onWillPop: () {
-        Navigator.pop(context, Lightning(enabled: toggled, value: value));
+        lightningBloc.add(LeavingScreen());
         return Future.value(false);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: Text('Lightning'),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SwitchSection(
-              toggled: toggled,
-              onToggled: (value) {
-                setState(() {
-                  toggled = value;
-                });
-              },
-            ),
-            LightningControl(
-              value: value,
-              onChanged: (value) {
-                this.value = value;
-              },
-            ),
-            SettingsSection()
-          ],
-        ),
+      child: BlocConsumer<LightningBloc, LightningState>(
+        listener: (context, state) {
+          if (state is PopBack) {
+            Navigator.pop(
+              context,
+              Lightning(
+                enabled: state.toggled,
+                value: state.value.toInt(),
+              ),
+            );
+          }
+        },
+        buildWhen: (previous, current) {
+          return !(current is PopBack);
+        },
+        builder: (context, state) {
+          if (state is Values) {
+            return Scaffold(
+              appBar: AppBar(
+                elevation: 0,
+                title: Text('Lightning'),
+              ),
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  SwitchSection(
+                    toggled: state.toggled,
+                    onToggled: (value) {
+                      lightningBloc.add(LightningToggled(value));
+                    },
+                  ),
+                  LightningControl(
+                    toggled: state.toggled,
+                    value: state.value,
+                    animate: state.animate,
+                    onChanged: (value) {
+                      lightningBloc.add(LightningValueChanged(value));
+                    },
+                  ),
+                  SettingsSection(
+                    toggled: state.toggled,
+                  )
+                ],
+              ),
+            );
+          }
+
+          throw Exception('Unknown state $state');
+        },
       ),
     );
   }
@@ -79,14 +106,14 @@ class SwitchSection extends StatelessWidget {
         children: <Widget>[
           Icon(
             GreenhousesIcons.lightning,
-            color: Colors.black,
+            color: toggled ? Colors.black : GreenhousesColors.gray,
           ),
           SizedBox(
             width: 12,
           ),
           Text(
-            'On',
-            style: TextStyle(color: Colors.black, fontSize: 18),
+            toggled ? 'On' : 'Off',
+            style: TextStyle(color: toggled ? Colors.black : GreenhousesColors.gray, fontSize: 18),
           ),
           Spacer(),
           CupertinoSwitch(
@@ -103,22 +130,26 @@ class SwitchSection extends StatelessWidget {
 }
 
 class LightningControl extends StatelessWidget {
+  final bool toggled;
+  final double value;
+  final bool animate;
+  final Function(double) onChanged;
 
-  final int value;
-  final Function(int) onChanged;
-
-  LightningControl({this.value, this.onChanged});
+  LightningControl({this.toggled, this.value, this.animate, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Padding(
-        padding: const EdgeInsets.all(45.0),
-        child: CustomPaint(
-          painter: CrossLinesPainter(),
-          child: SleekCircularSlider(
-            appearance: CircularSliderAppearance(
+    return AbsorbPointer(
+      absorbing: !toggled,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Padding(
+          padding: const EdgeInsets.all(45.0),
+          child: CustomPaint(
+            painter: CrossLinesPainter(),
+            child: SleekCircularSlider(
+              appearance: CircularSliderAppearance(
+                animationEnabled: animate,
                 startAngle: 270,
                 angleRange: 360,
                 spinnerMode: false,
@@ -128,18 +159,23 @@ class LightningControl extends StatelessWidget {
                   progressBarWidth: 1,
                 ),
                 customColors: CustomSliderColors(
-                    dotColor: GreenhousesColors.green,
-                    trackColor: Colors.white,
-                    progressBarColor: GreenhousesColors.green)),
-            min: 0,
-            max: 100,
-            initialValue: value.toDouble(),
-            innerWidget: (double value) {
-              return LightningInnerWidget(value.toInt());
-            },
-            onChange: (double value) {
-              onChanged(value.toInt());
-            },
+                  dotColor: toggled
+                      ? GreenhousesColors.green
+                      : GreenhousesColors.lightGreen,
+                  trackColor: Colors.white,
+                  progressBarColor: GreenhousesColors.green,
+                ),
+              ),
+              min: 0,
+              max: 100,
+              initialValue: value.toDouble(),
+              innerWidget: (double value) {
+                return LightningInnerWidget(value.toInt());
+              },
+              onChangeEnd: (double value) {
+                onChanged(value);
+              },
+            ),
           ),
         ),
       ),
@@ -225,6 +261,11 @@ class CrossLinesPainter extends CustomPainter {
 }
 
 class SettingsSection extends StatelessWidget {
+
+  final bool toggled;
+
+  SettingsSection({this.toggled});
+
   static const _kTitleStyle = TextStyle(
       fontWeight: FontWeight.w500,
       color: GreenhousesColors.blackMediumText,
@@ -237,34 +278,40 @@ class SettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Table(
-      children: [
-        TableRow(children: [
-          CircleColor(Color(0xFFFFD233)),
-          CircleIcon(GreenhousesIcons.timer),
-          CircleIcon(GreenhousesIcons.date),
-        ]),
-        TableRow(children: [
-          SizedBox(height: 12),
-          SizedBox(height: 12),
-          SizedBox(height: 12)
-        ]),
-        TableRow(children: [
-          Text('Color', style: _kTitleStyle, textAlign: TextAlign.center),
-          Text('Timer', style: _kTitleStyle, textAlign: TextAlign.center),
-          Text('Date', style: _kTitleStyle, textAlign: TextAlign.center),
-        ]),
-        TableRow(children: [
-          SizedBox(height: 12),
-          SizedBox(height: 12),
-          SizedBox(height: 12)
-        ]),
-        TableRow(children: [
-          Text('Yellow', style: _kValueStyle, textAlign: TextAlign.center),
-          Text('17:00-22:00', style: _kValueStyle, textAlign: TextAlign.center),
-          Text('Everyday', style: _kValueStyle, textAlign: TextAlign.center),
-        ]),
-      ],
+    return AbsorbPointer(
+      absorbing: !toggled,
+      child: Opacity(
+        opacity: toggled ? 1.0 : 0.5,
+        child: Table(
+          children: [
+            TableRow(children: [
+              CircleColor(Color(0xFFFFD233)),
+              CircleIcon(GreenhousesIcons.timer),
+              CircleIcon(GreenhousesIcons.date),
+            ]),
+            TableRow(children: [
+              SizedBox(height: 12),
+              SizedBox(height: 12),
+              SizedBox(height: 12)
+            ]),
+            TableRow(children: [
+              Text('Color', style: _kTitleStyle, textAlign: TextAlign.center),
+              Text('Timer', style: _kTitleStyle, textAlign: TextAlign.center),
+              Text('Date', style: _kTitleStyle, textAlign: TextAlign.center),
+            ]),
+            TableRow(children: [
+              SizedBox(height: 12),
+              SizedBox(height: 12),
+              SizedBox(height: 12)
+            ]),
+            TableRow(children: [
+              Text('Yellow', style: _kValueStyle, textAlign: TextAlign.center),
+              Text('17:00-22:00', style: _kValueStyle, textAlign: TextAlign.center),
+              Text('Everyday', style: _kValueStyle, textAlign: TextAlign.center),
+            ]),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -292,10 +339,9 @@ class CircleColor extends StatelessWidget {
             color: color,
             shadows: [
               BoxShadow(
-                color: color.withAlpha(40),
-                offset: Offset(0, 4),
-                blurRadius: 10
-              )
+                  color: color.withAlpha(40),
+                  offset: Offset(0, 4),
+                  blurRadius: 10)
             ],
             shape: CircleBorder(
               side: BorderSide(color: Colors.white, width: 2),
