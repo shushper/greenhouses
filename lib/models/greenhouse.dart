@@ -25,4 +25,17 @@ class Greenhouse {
     this.watering,
     this.ventilation,
   });
+
+  Greenhouse copyWith({Lightning lightning}) {
+    return Greenhouse(
+      id: id,
+      name: name,
+      image: image,
+      thumb: thumb,
+      lightning: lightning ?? this.lightning,
+      temperature: temperature,
+      watering: watering,
+      ventilation: ventilation
+    );
+  }
 }

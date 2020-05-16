@@ -25,6 +25,16 @@ class GreenhouseRepository {
       temperature: Temperature(enabled: true, value: 42),
       watering: Watering(enabled: false, value: 0),
       ventilation: Ventilation(enabled: true, value: 20),
+    ),
+    Greenhouse(
+      id: 3,
+      name: 'Greenhouse 3',
+      image: 'assets/images/greenhouse_3.jpeg',
+      thumb: 'assets/images/greenhouse_thumb_3.jpeg',
+      lightning: Lightning(enabled: false, value: 0),
+      temperature: Temperature(enabled: true, value: 23),
+      watering: Watering(enabled: true, value: 12),
+      ventilation: Ventilation(enabled: false, value: 0),
     )
   ];
 
@@ -34,5 +44,16 @@ class GreenhouseRepository {
 
   Future<Greenhouse> getGreenhouse(int id) async {
     return greenhouses.firstWhere((element) => element.id == id);
+  }
+
+  Future<Greenhouse> setLightning(int id, Lightning lightning) async {
+    final index = greenhouses.indexWhere((element) => element.id == id);
+    if (index >= 0) {
+      final greenhouse = greenhouses[index];
+      greenhouses[index] = greenhouse.copyWith(lightning: lightning);
+      return greenhouses[index];
+    } else {
+      throw Exception('Greenhouse with id $id does not exist');
+    }
   }
 }

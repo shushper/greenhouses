@@ -32,7 +32,7 @@ class _LightningScreenState extends State<LightningScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pop(context, Lightning());
+        Navigator.pop(context, Lightning(enabled: toggled, value: value));
         return Future.value(false);
       },
       child: Scaffold(

@@ -17,12 +17,19 @@ class GreenhouseBloc extends Bloc<GreenhouseEvent, GreenhouseState> {
   Stream<GreenhouseState> mapEventToState(GreenhouseEvent event) async* {
     if (event is FetchGreenhouse) {
       yield* mapFetchGreenhouseToState(event);
+    } else if (event is LightningWasChanged) {
+      yield* mapLightningWasChangedToState(event);
     }
   }
 
   Stream<GreenhouseState> mapFetchGreenhouseToState(FetchGreenhouse event) async* {
     yield GreenhouseLoading();
     final greenhouse = await repo.getGreenhouse(greenhouseId);
+    yield GreenhouseLoaded(greenhouse: greenhouse);
+  }
+
+  Stream<GreenhouseState> mapLightningWasChangedToState(LightningWasChanged event) async* {
+    final greenhouse = await repo.setLightning(greenhouseId, event.lightning);
     yield GreenhouseLoaded(greenhouse: greenhouse);
   }
 
