@@ -107,13 +107,14 @@ class ControlsSection extends StatelessWidget {
                 iconData: GreenhousesIcons.lightning,
                 title: 'Lightning',
                 toggled: greenhouse.lightning.enabled,
-                onTap: () async {
-                  final lightning = await Navigator.pushNamed(
+                onTap: ()  {
+                  Navigator.pushNamed(
                     context,
                     LightningScreen.route,
                     arguments: greenhouse.lightning,
-                  );
-                  BlocProvider.of<GreenhouseBloc>(context).add(LightningWasChanged(lightning));
+                  ).then((value){
+                    BlocProvider.of<GreenhouseBloc>(context).add(LightningWasChanged(value));
+                  });
                 },
               ),
               GreenhouseToggle(

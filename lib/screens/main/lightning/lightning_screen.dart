@@ -280,8 +280,9 @@ class SettingsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return AbsorbPointer(
       absorbing: !toggled,
-      child: Opacity(
+      child: AnimatedOpacity(
         opacity: toggled ? 1.0 : 0.5,
+        duration: Duration(milliseconds: 400),
         child: Table(
           children: [
             TableRow(children: [

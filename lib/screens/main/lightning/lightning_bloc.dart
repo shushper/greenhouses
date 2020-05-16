@@ -20,21 +20,37 @@ class LightningBloc extends Bloc<LightningEvent, LightningState> {
   @override
   Stream<LightningState> mapEventToState(LightningEvent event) async* {
     if (event is LightningToggled) {
-      toggled = event.toggled;
-      yield Values(
-        value: event.toggled ? value : 0,
-        toggled: toggled,
-        animate: true,
-      );
+      yield* mapLightningToggledToState(event);
     } else if (event is LightningValueChanged) {
-      value = event.value;
-      yield Values(
-        value: value,
-        toggled: toggled,
-        animate: false,
-      );
+      yield* mapLightningValueChangedToState(event);
     } else if (event is LeavingScreen) {
       yield PopBack(toggled ? value : 0, toggled);
     }
+  }
+
+  Stream<LightningState> mapLightningToggledToState(LightningToggled event) async* {
+    toggled = event.toggled;
+    double resultValue;
+
+    if (toggled) {
+      resultValue = value == 0 ? 5 : value;
+    } else {
+      resultValue = 0;
+    }
+
+    yield Values(
+      value: resultValue,
+      toggled: toggled,
+      animate: true,
+    );
+  }
+
+  Stream<LightningState> mapLightningValueChangedToState(LightningValueChanged event) async* {
+    value = event.value;
+    yield Values(
+      value: value,
+      toggled: toggled,
+      animate: false,
+    );
   }
 }
