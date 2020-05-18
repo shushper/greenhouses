@@ -107,13 +107,14 @@ class ControlsSection extends StatelessWidget {
                 iconData: GreenhousesIcons.lightning,
                 title: 'Lightning',
                 toggled: greenhouse.lightning.enabled,
-                onTap: ()  {
+                onTap: () {
                   Navigator.pushNamed(
                     context,
                     LightningScreen.route,
                     arguments: greenhouse.lightning,
-                  ).then((value){
-                    BlocProvider.of<GreenhouseBloc>(context).add(LightningWasChanged(value));
+                  ).then((value) {
+                    BlocProvider.of<GreenhouseBloc>(context)
+                        .add(LightningWasChanged(value));
                   });
                 },
               ),
@@ -145,7 +146,7 @@ class ControlsSection extends StatelessWidget {
   }
 }
 
-class GreenhouseToggle extends StatelessWidget {
+class GreenhouseToggle extends StatefulWidget {
   final IconData iconData;
   final String title;
   final bool toggled;
@@ -154,56 +155,124 @@ class GreenhouseToggle extends StatelessWidget {
   GreenhouseToggle({this.iconData, this.title, this.toggled, this.onTap});
 
   @override
-  Widget build(BuildContext context) {
-    final backgroundColor = toggled ? GreenhousesColors.green : Colors.white;
-    final borderColor =
-        toggled ? GreenhousesColors.green : GreenhousesColors.border;
-    final controlsColor = toggled ? Colors.white : Colors.black;
+  _GreenhouseToggleState createState() => _GreenhouseToggleState();
+}
 
+class _GreenhouseToggleState extends State<GreenhouseToggle>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<Color> backgroundAnimation;
+  Animation<Color> borderAnimation;
+  Animation<Color> controlsAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1000));
+    backgroundAnimation =
+        ColorTween(begin: Colors.white, end: GreenhousesColors.green).animate(
+      CurvedAnimation(
+          parent: controller, curve: Interval(0.3, 0.6, curve: Curves.easeIn)),
+    );
+    borderAnimation = ColorTween(
+            begin: GreenhousesColors.border, end: GreenhousesColors.green)
+        .animate(
+      CurvedAnimation(
+          parent: controller, curve: Interval(0.3, 0.6, curve: Curves.easeIn)),
+    );
+    controlsAnimation =
+        ColorTween(begin: Colors.black, end: Colors.white).animate(
+      CurvedAnimation(
+          parent: controller, curve: Interval(0.3, 0.6, curve: Curves.easeIn)),
+    );
+
+    controller.value = widget.toggled ? 1.0 : 0.0;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
+  void didUpdateWidget(GreenhouseToggle oldWidget) {
+    if (oldWidget.toggled != widget.toggled) {
+      if (widget.toggled) {
+        controller.forward();
+      } else {
+        controller.reverse();
+      }
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
-        onTap: onTap,
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(24.0),
-              border: Border.all(
-                color: borderColor,
-                width: toggled ? 0 : 1,
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        onTap: widget.onTap,
+        child: AnimatedBuilder(
+          animation: controller,
+          builder: (context, child) {
+            return _createWidgetWithColors(
+              backgroundAnimation.value,
+              borderAnimation.value,
+              controlsAnimation.value,
+              widget.toggled,
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _createWidgetWithColors(Color backgroundColor, Color borderColor,
+      Color controlColor, bool toggled) {
+    print("createWidgetWithColors ${widget.title}");
+
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(24.0),
+          border: Border.all(
+            color: borderColor,
+            width: toggled ? 0 : 1,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        iconData,
-                        size: 24,
-                        color: controlsColor,
-                      ),
-                      Spacer(),
-                      Indicator(toggled)
-                    ],
+                  Icon(
+                    widget.iconData,
+                    size: 24,
+                    color: controlColor,
                   ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Text(
-                    title,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                        color: controlsColor),
-                  )
+                  Spacer(),
+                  Indicator(toggled)
                 ],
               ),
-            ),
+              SizedBox(
+                height: 24,
+              ),
+              Text(
+                widget.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  color: controlColor,
+                ),
+              )
+            ],
           ),
         ),
       ),
