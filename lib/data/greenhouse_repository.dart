@@ -11,6 +11,11 @@ class GreenhouseRepository {
       name: 'Greenhouse 1',
       image: 'assets/images/greenhouse_1.jpeg',
       thumb: 'assets/images/greenhouse_thumb_1.jpeg',
+      images: [
+        'assets/images/greenhouse_1.jpeg',
+        'assets/images/greenhouse_1.jpeg',
+        'assets/images/greenhouse_1.jpeg'
+      ],
       lightning: Lightning(enabled: true, value: 59),
       temperature: Temperature(enabled: true, value: 30),
       watering: Watering(enabled: false, value: 0),
@@ -21,6 +26,11 @@ class GreenhouseRepository {
       name: 'Greenhouse 2',
       image: 'assets/images/greenhouse_2.jpeg',
       thumb: 'assets/images/greenhouse_thumb_2.jpeg',
+      images: [
+        'assets/images/greenhouse_2.jpeg',
+        'assets/images/greenhouse_2.jpeg',
+        'assets/images/greenhouse_2.jpeg'
+      ],
       lightning: Lightning(enabled: true, value: 23),
       temperature: Temperature(enabled: true, value: 42),
       watering: Watering(enabled: false, value: 0),
@@ -31,6 +41,11 @@ class GreenhouseRepository {
       name: 'Greenhouse 3',
       image: 'assets/images/greenhouse_3.jpeg',
       thumb: 'assets/images/greenhouse_thumb_3.jpeg',
+      images: [
+        'assets/images/greenhouse_3.jpeg',
+        'assets/images/greenhouse_3.jpeg',
+        'assets/images/greenhouse_3.jpeg'
+      ],
       lightning: Lightning(enabled: false, value: 0),
       temperature: Temperature(enabled: true, value: 23),
       watering: Watering(enabled: true, value: 12),

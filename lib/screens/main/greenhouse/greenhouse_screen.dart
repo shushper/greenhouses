@@ -1,3 +1,4 @@
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,10 +51,7 @@ class GreenhouseScreenContent extends StatelessWidget {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: ImagesSection(state.greenhouse),
-                ),
+                Expanded(flex: 1, child: ImagesSection(state.greenhouse)),
                 ControlsSection(state.greenhouse),
               ],
             ),
@@ -66,19 +64,55 @@ class GreenhouseScreenContent extends StatelessWidget {
   }
 }
 
-class ImagesSection extends StatelessWidget {
+class ImagesSection extends StatefulWidget {
   final Greenhouse greenhouse;
 
   ImagesSection(this.greenhouse);
 
   @override
+  _ImagesSectionState createState() => _ImagesSectionState();
+}
+
+class _ImagesSectionState extends State<ImagesSection> {
+  int _currentIndexPage = 0;
+  final pageController = PageController();
+
+  @override
   Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+            child: PageView(
+              controller: pageController,
+              onPageChanged: (page) {
+                setState(() {
+                  _currentIndexPage = page;
+                });
+              },
+              children: widget.greenhouse.images.map((imageLink) => _createImageWidget(imageLink)).toList()
+            )),
+        DotsIndicator(
+          dotsCount: widget.greenhouse.images.length,
+          position: _currentIndexPage.toDouble(),
+          decorator: DotsDecorator(
+            size: Size.square(6),
+            activeSize: Size.square(6),
+            spacing: EdgeInsets.all(3),
+            color: Color(0xFFE5E5E5),
+            activeColor: Color(0xFF006729),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _createImageWidget(String imageLink) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
         child: Image.asset(
-          greenhouse.image,
+          imageLink,
           fit: BoxFit.cover,
         ),
       ),

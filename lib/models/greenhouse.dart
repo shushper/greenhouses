@@ -7,6 +7,7 @@ class Greenhouse {
   final int id;
   final String name;
   final String image;
+  final List<String> images;
   final String thumb;
 
   final Lightning lightning;
@@ -19,6 +20,7 @@ class Greenhouse {
     this.id,
     this.name,
     this.image,
+    this.images,
     this.thumb,
     this.lightning,
     this.temperature,
@@ -31,6 +33,7 @@ class Greenhouse {
       id: id,
       name: name,
       image: image,
+      images: images,
       thumb: thumb,
       lightning: lightning ?? this.lightning,
       temperature: temperature,
